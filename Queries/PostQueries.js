@@ -19,7 +19,6 @@ export const getOne = async (req, res) => {
       { $inc: { viewCount: 1 } },
       { returnDocument: 'after' }
     );
-    console.log(post);
     if (!post) {
       return res.status(404).json({ message: 'Такой статьи не существует' });
     }
@@ -27,6 +26,20 @@ export const getOne = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'Не удалось получить статью' });
+  }
+};
+
+export const remove = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const post = await Post.findByIdAndRemove({ _id: postId });
+    if (!post) {
+      return res.status(404).json({ message: 'Такой статьи не существует' });
+    }
+    res.json({ success: true });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Не удалось удалить статью' });
   }
 };
 
@@ -49,5 +62,28 @@ export const create = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'Не удалось создать статью' });
+  }
+};
+
+export const update = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const post = await Post.updateOne(
+      { _id: postId },
+      {
+        title: req.body.title,
+        text: req.body.text,
+        imageUrl: req.body.imageUrl,
+        tags: req.body.tags,
+        author: req.userId,
+      }
+    );
+    if (!post) {
+      return res.status(404).json({ message: 'Такой статьи не существует' });
+    }
+    res.json({ success: true });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Не удалось обновить статью' });
   }
 };

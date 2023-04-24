@@ -8,7 +8,13 @@ import {
 } from './validations.js';
 import checkAuth from './middleWares/checkAuth.js';
 import { register, login, getMe } from './Queries/UserQueries.js';
-import { create, getAll, getOne } from './Queries/PostQueries.js';
+import {
+  create,
+  getAll,
+  getOne,
+  remove,
+  update,
+} from './Queries/PostQueries.js';
 
 const app = express();
 
@@ -20,16 +26,14 @@ mongoose
 app.use(express.json());
 
 app.post('/auth/register', registerValidation, register);
-
 app.post('/auth/login', loginValidation, login);
-
 app.get('/auth/me', checkAuth, getMe);
 
-app.get('/posts', getAll);
-
-app.get('/posts/:id', getOne);
-
 app.post('/posts', checkAuth, postValidation, create);
+app.get('/posts', getAll);
+app.get('/posts/:id', getOne);
+app.patch('/posts/:id', checkAuth, update);
+app.delete('/posts/:id', checkAuth, remove);
 
 app.listen('4444', (error) => {
   if (error) {
