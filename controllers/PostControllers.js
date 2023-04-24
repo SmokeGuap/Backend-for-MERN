@@ -1,5 +1,5 @@
-import { validationResult } from 'express-validator';
 import Post from '../models/Post.js';
+import File from '../models/File.js';
 
 export const getAll = async (req, res) => {
   try {
@@ -45,10 +45,6 @@ export const remove = async (req, res) => {
 
 export const create = async (req, res) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json(errors.array());
-    }
     const doc = new Post({
       title: req.body.title,
       text: req.body.text,
@@ -86,4 +82,13 @@ export const update = async (req, res) => {
     console.log(error);
     res.status(500).json({ message: 'Не удалось обновить статью' });
   }
+};
+
+export const upload = async (req, res) => {
+  const doc = new File({
+    name: req.body.name,
+    data: `/uploads/${req.file.originalname}`,
+  });
+  const image = await doc.save();
+  res.json({ ...image._doc, url: `/uploads/${req.file.originalname}` });
 };
