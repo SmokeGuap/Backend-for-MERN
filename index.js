@@ -7,14 +7,14 @@ import {
   registerValidation,
 } from './validations.js';
 import checkAuth from './middleWares/checkAuth.js';
-import { register, login, getMe } from './Queries/UserQueries.js';
+import { register, login, getMe } from './controllers/UserControllers.js';
 import {
   create,
   getAll,
   getOne,
   remove,
   update,
-} from './Queries/PostQueries.js';
+} from './controllers/PostControllers.js';
 
 const app = express();
 
