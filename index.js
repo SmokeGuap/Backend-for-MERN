@@ -6,6 +6,7 @@ import { validationResult } from 'express-validator';
 
 import { registerValidation } from './validations/auth.js';
 import User from './models/User.js';
+import checkAuth from './middleWares/checkAuth.js';
 
 const app = express();
 
@@ -35,16 +36,8 @@ app.post('/auth/register', registerValidation, async (req, res) => {
     });
     const user = await doc.save();
 
-    const token = jwt.sign(
-      {
-        _id: user._id,
-      },
-      'secret',
-      { expiresIn: '30d' }
-    );
-
     const { passwordHash: hash, ...userData } = user._doc;
-    res.json({ ...userData, token });
+    res.json({ ...userData });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -77,7 +70,7 @@ app.post('/auth/login', async (req, res) => {
           'secret',
           { expiresIn: '30d' }
         );
-        const { passwordHash: hash, ...userData } = user._doc;
+        const { passwordHash, ...userData } = user._doc;
         res.json({ ...userData, token });
       }
     }
@@ -87,7 +80,27 @@ app.post('/auth/login', async (req, res) => {
   }
 });
 
- 
+app.get('/auth/me', checkAuth, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+
+    if (!user) {
+      return res.status(404).json({
+        message: 'Пользователь не найден',
+      });
+    } else {
+      const { passwordHash, ...userData } = user._doc;
+      res.json({
+        ...userData,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: 'Нет доступа',
+    });
+  }
+});
 
 app.listen('4444', (error) => {
   if (error) {
