@@ -3,7 +3,10 @@ import File from '../models/File.js';
 
 export const getAll = async (req, res) => {
   try {
-    const posts = await Post.find().populate('author');
+    const posts = await Post.find().populate({
+      path: 'author',
+      select: ['name', 'avatar'],
+    });
     res.json(posts);
   } catch (error) {
     console.log(error);
