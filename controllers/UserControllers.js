@@ -1,6 +1,10 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import User from '../models/User.js';
+import * as dotenv from 'dotenv';
+dotenv.config();
+
+const JWT_SECRET = process.env.JWT_SECRET;
 
 export const register = async (req, res) => {
   try {
@@ -46,7 +50,7 @@ export const login = async (req, res) => {
       {
         _id: user._id,
       },
-      'secret',
+      JWT_SECRET,
       { expiresIn: '30d' }
     );
     const { passwordHash, ...userData } = user._doc;

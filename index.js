@@ -1,11 +1,16 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import multer from 'multer';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 import { UserControllers, PostControllers } from './controllers/index.js';
 import checkAuth from './middleWares/checkAuth.js';
 import * as validations from './validations.js';
 import validationErrors from './middleWares/validationErrors.js';
+
+const port = process.env.PORT || 4000;
+const DB_HOST = process.env.DB_HOST;
 
 const app = express();
 const upload = multer({
@@ -20,7 +25,7 @@ const upload = multer({
 });
 
 mongoose
-  .connect('mongodb://127.0.0.1:27017/mern')
+  .connect(DB_HOST)
   .then(() => console.log('MongoDB is running'))
   .catch((error) => console.log('DB error', error));
 
@@ -61,7 +66,7 @@ app.delete('/posts/:id', checkAuth, PostControllers.remove);
 
 app.post('/uploads', upload.single('image'), PostControllers.upload);
 
-app.listen('4444', (error) => {
+app.listen(port, (error) => {
   if (error) {
     return console.log(error);
   }
