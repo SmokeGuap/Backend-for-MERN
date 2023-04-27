@@ -14,6 +14,25 @@ export const getAll = async (req, res) => {
   }
 };
 
+export const getLastTags = async (req, res) => {
+  try {
+    const posts = await Post.find()
+      .populate({
+        path: 'author',
+        select: ['name', 'avatar'],
+      })
+      .limit(5);
+    const tags = posts
+      .map((item) => item.tags)
+      .flat()
+      .slice(0, 5);
+    res.json(tags);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Не удалось получить статьи' });
+  }
+};
+
 export const getOne = async (req, res) => {
   try {
     const postId = req.params.id;

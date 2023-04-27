@@ -56,6 +56,7 @@ app.post(
   PostControllers.create
 );
 app.get('/posts', PostControllers.getAll);
+app.get('/posts/tags', PostControllers.getLastTags);
 app.get('/posts/:id', PostControllers.getOne);
 app.patch(
   '/posts/:id',
