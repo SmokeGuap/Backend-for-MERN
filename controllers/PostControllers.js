@@ -5,7 +5,7 @@ export const getAll = async (req, res) => {
   try {
     const posts = await Post.find().populate({
       path: 'author',
-      select: ['name', 'avatar'],
+      select: ['fullName', 'avatarUrl', 'createdAt'],
     });
     res.json(posts);
   } catch (error) {
@@ -19,7 +19,7 @@ export const getLastTags = async (req, res) => {
     const posts = await Post.find()
       .populate({
         path: 'author',
-        select: ['name', 'avatar'],
+        select: ['fullName', 'avatarUrl', 'createdAt'],
       })
       .limit(5);
     const tags = posts
@@ -40,7 +40,10 @@ export const getOne = async (req, res) => {
       { _id: postId },
       { $inc: { viewCount: 1 } },
       { returnDocument: 'after' }
-    );
+    ).populate({
+      path: 'author',
+      select: ['fullName', 'avatarUrl', 'createdAt'],
+    });
     if (!post) {
       return res.status(404).json({ message: 'Такой статьи не существует' });
     }
@@ -71,7 +74,7 @@ export const create = async (req, res) => {
       title: req.body.title,
       text: req.body.text,
       imageUrl: req.body.imageUrl,
-      tags: req.body.tags,
+      tags: req.body.tags.split(','),
       author: req.userId,
     });
     console.log(doc);
