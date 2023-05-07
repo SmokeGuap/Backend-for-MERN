@@ -17,8 +17,10 @@ export const login = [
 ];
 
 export const post = [
-  body('title', 'Введите заголовок статьи').isLength({ min: 5 }).isString(),
-  body('text', 'Введите текст статьи').isLength({ min: 5 }).isString(),
+  body('title', 'Введите заголовок статьи').isLength({ min: 1 }).isString(),
+  body('text', 'Статья должна содержать больше 5 символов')
+    .isLength({ min: 5 })
+    .isString(),
   body('tags', 'Неверный формат тегов').optional(),
   body('imageUrl', 'Неверная ссылка на изображение').optional().isString(),
 ];

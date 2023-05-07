@@ -22,11 +22,16 @@ export const getLastTags = async (req, res) => {
         select: ['fullName', 'avatarUrl', 'createdAt'],
       })
       .limit(5);
-    const tags = posts
-      .map((item) => item.tags)
-      .flat()
-      .slice(0, 5);
-    res.json(tags);
+
+    const tags = posts.map((item) => item.tags).flat();
+
+    const uniqTags = tags.reduce((acc, item) => {
+      if (acc.includes(item)) {
+        return acc;
+      }
+      return [...acc, item];
+    }, []);
+    res.json(uniqTags);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'Не удалось получить статьи' });
@@ -74,7 +79,7 @@ export const create = async (req, res) => {
       title: req.body.title,
       text: req.body.text,
       imageUrl: req.body.imageUrl,
-      tags: req.body.tags.split(','),
+      tags: req.body.tags.split(' '),
       author: req.userId,
     });
     console.log(doc);
@@ -95,7 +100,7 @@ export const update = async (req, res) => {
         title: req.body.title,
         text: req.body.text,
         imageUrl: req.body.imageUrl,
-        tags: req.body.tags.split(','),
+        tags: req.body.tags.split(' '),
         author: req.userId,
       }
     );
