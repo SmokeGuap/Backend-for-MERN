@@ -72,8 +72,13 @@ app.post(
   checkAuth,
   CommentControllers.create
 );
-app.get('/comments', CommentControllers.getAll);
+app.get('/comments', CommentControllers.getLastComments);
 app.get('/comments/:id', CommentControllers.getCommentsByPost);
+app.patch(
+  '/comments/:id',
+  checkAuth,
+  CommentControllers.update
+);
 app.delete('/comments/:id', checkAuth, CommentControllers.remove);
 
 app.post('/uploads', upload.single('image'), PostControllers.upload);
