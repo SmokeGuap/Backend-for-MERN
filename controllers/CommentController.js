@@ -1,17 +1,17 @@
 import Comment from '../models/Comment.js';
 
-// export const getAll = async (req, res) => {
-//     try {
-//       const posts = await Post.find().populate({
-//         path: 'author',
-//         select: ['fullName', 'avatarUrl', 'createdAt'],
-//       });
-//       res.json(posts.reverse());
-//     } catch (error) {
-//       console.log(error);
-//       res.status(500).json({ message: 'Не удалось получить статьи' });
-//     }
-//   };
+export const getAll = async (req, res) => {
+    try {
+      const comments = await Comment.find().populate({
+        path: 'author',
+        select: ['fullName', 'avatarUrl'],
+      });
+      res.json(comments.reverse());
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: 'Не удалось получить комментарии' });
+    }
+  };
   
 //   export const getLastTags = async (req, res) => {
 //     try {

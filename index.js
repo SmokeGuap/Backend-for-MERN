@@ -72,6 +72,7 @@ app.post(
   checkAuth,
   CommentControllers.create
 );
+app.get('/comments', CommentControllers.getAll);
 
 app.post('/uploads', upload.single('image'), PostControllers.upload);
 
