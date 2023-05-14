@@ -7,7 +7,7 @@ export const getAll = async (req, res) => {
       path: 'author',
       select: ['fullName', 'avatarUrl', 'createdAt'],
     });
-    res.json(posts);
+    res.json(posts.reverse());
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'Не удалось получить статьи' });
@@ -31,7 +31,7 @@ export const getLastTags = async (req, res) => {
       }
       return [...acc, item];
     }, []);
-    res.json(uniqTags);
+    res.json(uniqTags.slice(0, 5));
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'Не удалось получить статьи' });
