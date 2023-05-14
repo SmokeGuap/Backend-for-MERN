@@ -49,19 +49,19 @@ export const getLastComments = async (req, res) => {
 //     }
 //   };
 
-//   export const remove = async (req, res) => {
-//     try {
-//       const postId = req.params.id;
-//       const post = await Post.findByIdAndRemove({ _id: postId });
-//       if (!post) {
-//         return res.status(404).json({ message: 'Такой статьи не существует' });
-//       }
-//       res.json({ success: true });
-//     } catch (error) {
-//       console.log(error);
-//       res.status(500).json({ message: 'Не удалось удалить статью' });
-//     }
-//   };
+  export const remove = async (req, res) => {
+    try {
+      const commentId = req.params.id;
+      const comment = await Comment.findByIdAndRemove({ _id: commentId });
+      if (!comment) {
+        return res.status(404).json({ message: 'Такого комментария не существует' });
+      }
+      res.json({ success: true });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: 'Не удалось удалить комментарий' });
+    }
+  };
 
 export const create = async (req, res) => {
   try {

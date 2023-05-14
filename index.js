@@ -73,6 +73,8 @@ app.post(
   CommentControllers.create
 );
 app.get('/comments', CommentControllers.getAll);
+app.get('/lastcomments', CommentControllers.getLastComments);
+app.delete('/comments/:id', checkAuth, CommentControllers.remove);
 
 app.post('/uploads', upload.single('image'), PostControllers.upload);
 
