@@ -82,7 +82,6 @@ export const create = async (req, res) => {
       tags: req.body.tags.split(' '),
       author: req.userId,
     });
-    console.log(doc);
     const post = await doc.save();
     res.json(post);
   } catch (error) {

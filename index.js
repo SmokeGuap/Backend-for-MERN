@@ -5,7 +5,7 @@ import cors from 'cors';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-import { UserControllers, PostControllers } from './controllers/index.js';
+import { UserControllers, PostControllers, CommentControllers } from './controllers/index.js';
 import checkAuth from './middleWares/checkAuth.js';
 import * as validations from './validations.js';
 import validationErrors from './middleWares/validationErrors.js';
@@ -66,6 +66,12 @@ app.patch(
   PostControllers.update
 );
 app.delete('/posts/:id', checkAuth, PostControllers.remove);
+
+app.post(
+  '/comments',
+  checkAuth,
+  CommentControllers.create
+);
 
 app.post('/uploads', upload.single('image'), PostControllers.upload);
 
