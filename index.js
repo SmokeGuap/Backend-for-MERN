@@ -68,12 +68,12 @@ app.patch(
 app.delete('/posts/:id', checkAuth, PostControllers.remove);
 
 app.post(
-  '/comments',
+  '/comments/:id',
   checkAuth,
   CommentControllers.create
 );
 app.get('/comments', CommentControllers.getAll);
-app.get('/lastcomments', CommentControllers.getLastComments);
+app.get('/comments/:id', CommentControllers.getCommentsByPost);
 app.delete('/comments/:id', checkAuth, CommentControllers.remove);
 
 app.post('/uploads', upload.single('image'), PostControllers.upload);
